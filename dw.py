@@ -1,7 +1,7 @@
 import argparse
 import re
 import shutil
-from os import mkdir, remove
+from os import mkdir, remove, system
 from os.path import abspath, isdir, isfile, join
 
 import moviepy.editor as mp
@@ -16,19 +16,29 @@ parser.add_argument('--path-dest', '-pd')
 args = list(vars(parser.parse_args()).values())
 
 count = 0
+name = ""
+errors = []
+
+
+def write_log_error(msg):
+    file_log = open('./logs.txt', 'w')
+    file_log.writelines(msg)
+    file_log.close()
 
 
 def move_file(name, path):
     shutil.move(abspath('./{0}'.format((name))), path)
 
 
-def dowload_audio(url, path, fromat):
-    global count
+def dowload_audio(url, path, format):
+    global count, name, errors
     try:
+        system('cls')
         pafyNew = pafy.new(url)
         parser_name = " ".join(
             re.sub(r"[^a-zA-Z0-9]", " ", pafyNew.title).split())
-        name_audio = f'{parser_name}.{fromat}'
+        name = parser_name
+        name_audio = f'{parser_name}.{format}'
         path_audio = abspath(f'{parser_name}.m4a')
         if isfile(join(path, name_audio)):
             print(
@@ -42,36 +52,50 @@ def dowload_audio(url, path, fromat):
         audio_m4a.close()
         remove(path_audio)
         move_file(name_audio, path)
+        system('cls')
+        print("Download completed...")
         count = 0
     except:
         count += 1
+
         if count == 4:
             count = 0
-            print(f'\nFile with url: {url} could not be downloaded')
+            system('cls')
+            errors.append(
+                f'File with Name: {name}, Url: {url} and Format: {format} could not be downloaded \n')
             return
+        system('cls')
         print('Dowload error trying again...')
-        dowload_audio(url, path, fromat)
+        dowload_audio(url, path, format)
 
 
 def dowload_mp4(url, path, format):
-    global count
+    global count, name, errors
     try:
+        system('cls')
         pafyNew = pafy.new(url)
-        name = f'{pafyNew.title}.mp4'
-        if isfile(join(path, name)):
-            print(f'\nFile with url: {url} and name: {name} already exist')
+        nameFile = f'{pafyNew.title}.mp4'
+        name = nameFile
+        if isfile(join(path, nameFile)):
+            print(f'\nFile with url: {url} and name: {nameFile} already exist')
             return
-        print(f'\nDownloading url: {url} name: {name}')
+        print(f'\nDownloading url: {url} name: {nameFile}')
         video = pafyNew.getbest(preftype='mp4')
         video.download()
-        move_file(name, path)
+        move_file(nameFile, path)
+        system('cls')
+        print("Download completed...")
         count = 0
     except:
         count += 1
+
         if count == 4:
             count = 0
-            print(f'\nFile with url: {url} could not be downloaded')
+            system('cls')
+            errors.append(
+                f'File with Name: {name}, Url: {url} and Format: {format} could not be downloaded \n')
             return
+        system('cls')
         print('Dowload error trying again...')
         dowload_mp4(url, path, format)
 
@@ -96,7 +120,7 @@ def validations(args):
     url, file_names, format, path_dest = args
     if not format in {'mp3', 'ogg', 'wav', 'mp4'}:
         raise OSError(
-            'Fromat is invalid... formats valids: mp3, wav, ogg, mp4')
+            'format is invalid... formats valids: mp3, wav, ogg, mp4')
 
     if path_dest == None:
         raise OSError(
@@ -109,10 +133,10 @@ def validations(args):
     example:
       -fu C:\\Users\\username\\names.txt
 
-      data of file
-        name 1
-        name 2
-        etc...
+    data of file
+      name 1
+      name 2
+      etc...
   """)
 
     if not isdir(path_dest):
@@ -134,7 +158,6 @@ def main():
     format = 'mp4'
     if extension in {'mp3', 'ogg', 'wav'}:
         format = 'audio'
-
     if url != None and file_names == None:
         formats[format](url, path_dest, extension)
     elif file_names != None and url == None:
@@ -142,6 +165,9 @@ def main():
         urls = get_urls(names)
         for i in range(len(urls)):
             formats[format](urls[i], path_dest, extension)
+        else:
+            if len(errors) != 0:
+              write_log_error(errors)
 
 
 if __name__ == '__main__':
