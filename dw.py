@@ -46,8 +46,11 @@ class Dowloader:
     return readData
 
   def delete_files(self):
-    for _, path_file_error in enumerate(self.path_files_errors):
-      remove(path_file_error)
+    try:
+      for _, path_file_error in enumerate(self.path_files_errors):
+        remove(path_file_error)
+    except:
+      return
   
   def move_download(self):
     if self.format_file == "mp3":
