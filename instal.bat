@@ -25,6 +25,9 @@ echo Agregando C:\ffmpeg\bin al PATH
 echo ========================================
 setx /M PATH "%PATH%;C:\ffmpeg\bin"
 
+rem ====== Forzar el PATH en esta sesión ======
+set "PATH=C:\ffmpeg\bin;%PATH%"
+
 echo ========================================
 echo Limpiando archivos temporales
 echo ========================================
@@ -53,5 +56,6 @@ if errorlevel 1 (
 
 echo ========================================
 echo Proceso completado!
+echo Ahora puedes usar ffmpeg en cualquier nueva consola.
 echo ========================================
 pause
