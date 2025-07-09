@@ -1,5 +1,5 @@
 @echo off
-setlocal
+setlocal EnableDelayedExpansion
 
 echo ========================================
 echo Descargando FFmpeg para Windows...
@@ -21,11 +21,25 @@ if exist "C:\ffmpeg" (
 move ffmpeg_temp\ffmpeg-* C:\ffmpeg
 
 echo ========================================
-echo Agregando C:\ffmpeg\bin al PATH
+echo Preparando PATH global
 echo ========================================
-setx /M PATH "%PATH%;C:\ffmpeg\bin"
+rem Leer PATH actual del registro
+for /f "tokens=3*" %%A in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v Path') do set "OldPath=%%A %%B"
 
-rem ====== Forzar el PATH en esta sesión ======
+rem Verificar si ya contiene C:\ffmpeg\bin
+echo !OldPath! | find /I "C:\ffmpeg\bin" >nul
+if not errorlevel 1 (
+    echo C:\ffmpeg\bin ya existe en el PATH global.
+) else (
+    echo Agregando C:\ffmpeg\bin al PATH global...
+    set "NewPath=!OldPath!;C:\ffmpeg\bin"
+    rem Modificar registro de forma segura
+    reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v Path /t REG_EXPAND_SZ /d "!NewPath!" /f
+)
+
+echo ========================================
+echo Actualizando PATH en esta sesion
+echo ========================================
 set "PATH=C:\ffmpeg\bin;%PATH%"
 
 echo ========================================
@@ -55,7 +69,10 @@ if errorlevel 1 (
 )
 
 echo ========================================
-echo Proceso completado!
-echo Ahora puedes usar ffmpeg en cualquier nueva consola.
+echo ¡Proceso completado!
+echo ffmpeg y ffprobe funcionan correctamente.
+echo ========================================
+echo NOTA: Para que el PATH global funcione en nuevas consolas,
+echo       debes cerrar sesión o reiniciar, o abrir una nueva consola.
 echo ========================================
 pause
