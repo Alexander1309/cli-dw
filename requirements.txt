@@ -1,0 +1,3 @@
+yt-dlp
+youtube-search-python
+httpx<0.24
