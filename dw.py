@@ -23,11 +23,11 @@ class Downloader:
         self.args = list(vars(parser.parse_args()).values())
 
     def write_log_error(self):
-        with open('./songs_not_downloaded.txt', 'w') as file_log:
+        with open('./songs_not_downloaded.txt', 'w', encoding='utf-8') as file_log:
             file_log.writelines(self.message_errors)
 
     def read_file(self, path):
-        with open(path, 'r') as file:
+        with open(path, 'r', encoding='utf-8', errors='replace') as file:
             return [line.strip('\n').strip('\t') for line in file.readlines()]
 
     def validate_args(self):
@@ -105,10 +105,20 @@ File content:
     def get_urls(self, data):
         urls = []
         for n in data:
+            if not n:
+                continue
             print(f'Getting URL for: {n}')
-            url = VideosSearch(n, limit=1)
-            urls.append(url.result()['result'][0]['link'])
-        return urls
+            try:
+                search = VideosSearch(n, limit=1)
+                result = search.result()
+                items = result.get('result') or []
+                if items:
+                    urls.append(items[0].get('link'))
+                else:
+                    self.message_errors.append(f"No results for query: {n}\n")
+            except Exception as e:
+                self.message_errors.append(f"Search error for '{n}': {str(e)}\n")
+        return [u for u in urls if u]
 
     def main(self):
         self.validate_args()
@@ -129,6 +139,8 @@ File content:
         else:
             self.url_file = url
             self.unloader()
+            if self.message_errors:
+                self.write_log_error()
 
 
 if __name__ == '__main__':

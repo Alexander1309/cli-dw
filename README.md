@@ -30,17 +30,42 @@ pip install yt_dlp youtube-search-python
 
 ## ⚠️ Instalación de FFmpeg
 
-Antes de usar el script, debes ejecutar el archivo `install.bat` incluido en el proyecto. Este archivo descarga FFmpeg (herramienta necesaria para procesar audio y video), lo descomprime, lo mueve a `C:\ffmpeg`, y agrega automáticamente su carpeta `bin` al PATH de Windows. Además, limpia los archivos temporales y verifica la instalación de `ffmpeg` y `ffprobe`. Una vez completado, tu sistema estará listo para realizar conversiones de audio y video correctamente.
+Antes de usar el script, ejecuta `instal.bat` (como Administrador recomendado). Este archivo:
+
+- Descarga FFmpeg para Windows.
+- Descomprime y mueve los binarios a `C:\ffmpeg`.
+- Agrega `C:\ffmpeg\bin` al PATH global.
+- Verifica que `ffmpeg` y `ffprobe` estén disponibles.
+
+Si no tienes permisos de administrador, el script añadirá el PATH solo para la sesión actual; en ese caso, abre una nueva consola tras la instalación.
 
 ## ⚙️ Uso
 
-### Descarga individual por URL
+### Opción 1: Modo interactivo (recomendado)
 
-```bash
-python script.py --url "https://www.youtube.com/watch?v=XXXXXXXXXXX" --format mp3 --path-dest "C:\Descargas"
+Usa el lanzador por lotes `dw.bat`, que guía paso a paso:
+
+```bat
+dw.bat
 ```
 
-### Descarga masiva desde archivo
+Con `dw.bat` podrás:
+
+- Elegir entre descargar por URL o por archivo de nombres (por defecto usa `Lista Canciones.txt`).
+- Seleccionar formato de salida: `mp3` o `mp4`.
+- Indicar carpeta de destino (si no existe, el script de Python la creará).
+
+Además, `dw.bat` fuerza la consola a UTF-8 para mostrar correctamente caracteres con acentos.
+
+### Opción 2: Uso directo de Python
+
+#### Descarga individual por URL
+
+```bash
+python dw.py --url "https://www.youtube.com/watch?v=XXXXXXXXXXX" --format mp3 --path-dest "C:\Descargas"
+```
+
+#### Descarga masiva desde archivo
 
 1. Crear un archivo de texto, por ejemplo `songs.txt`, con el siguiente contenido:
 
@@ -53,7 +78,7 @@ Coldplay - Yellow
 2. Ejecutar el script:
 
 ```bash
-python script.py --file "C:\ruta\a\songs.txt" --format mp3 --path-dest "C:\Descargas"
+python dw.py --file "C:\ruta\a\songs.txt" --format mp3 --path-dest "C:\Descargas"
 ```
 
 ### Opciones disponibles
@@ -68,11 +93,14 @@ python script.py --file "C:\ruta\a\songs.txt" --format mp3 --path-dest "C:\Desca
 ## 🗃️ Estructura del proyecto
 
 ```
-Downloader/
+cli-dw/
 │
-├── script.py
-├── install.bat
+├── dw.py                      ← Script principal (descargas)
+├── dw.bat                     ← Lanzador interactivo (Windows)
+├── instal.bat                 ← Instalador de FFmpeg (Windows)
+├── Lista Canciones.txt        ← Archivo opcional con nombres de canciones
 ├── songs_not_downloaded.txt   ← Se crea si hay errores durante la descarga
+├── requirements.txt           ← Dependencias Python
 ```
 
 ## 🛡️ Advertencia
