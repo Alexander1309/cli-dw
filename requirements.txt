@@ -1,3 +1,1 @@
-yt-dlp
-youtube-search-python
-httpx<0.24
+yt-dlp>=2026.8.19

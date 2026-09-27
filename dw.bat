@@ -6,10 +6,10 @@ chcp 65001 >nul
 set "PYTHONUTF8=1"
 set "PYTHONIOENCODING=utf-8"
 
-title YouTube Audio/Video Downloader - CLI
+title YouTube Audio/Video Downloader 4.0 - CLI
 
 echo ============================================
-echo   YouTube Audio/Video Downloader
+echo   YouTube Audio/Video Downloader 4.0
 echo   Desarrollado por Alexander Uriel Torres Pérez
 echo ============================================
 echo.
@@ -17,7 +17,7 @@ echo.
 rem --- Comprobaciones básicas ---
 where python >nul 2>&1
 if errorlevel 1 (
-  echo ERROR: Python no está en el PATH. Instala Python 3.7+ y vuelve a intentar.
+  echo ERROR: Python no está en el PATH. Instala Python 3.8+ y vuelve a intentar.
   pause
   exit /b 1
 )

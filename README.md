@@ -1,31 +1,30 @@
-# 🎧 YouTube Audio/Video Downloader
+# 🎧 YouTube Audio/Video Downloader 4.0.1
 
-Este proyecto es un script en Python diseñado para descargar canciones o videos desde YouTube en formato **mp3** o **mp4** de manera rápida y automática. Además, permite buscar y descargar múltiples canciones a partir de un archivo de texto con nombres de canciones o artistas.
+Herramienta de línea de comandos para descargar contenido de YouTube en formato **mp3** o **mp4**. La versión 4.0.1 usa la búsqueda integrada de `yt-dlp`, valida los argumentos antes de iniciar, evita descargar listas completas por accidente y devuelve un código de salida distinto de cero si alguna descarga falla.
 
 ## 🚀 Funcionalidades
 
 - **Descarga por URL directa:** Puedes descargar cualquier video o audio directamente proporcionando la URL de YouTube.
 - **Descarga por nombres desde archivo:** Lee un archivo de texto con una lista de nombres de canciones y automáticamente busca en YouTube la mejor coincidencia para descargarlas.
 - **Formatos soportados:**
-
   - Audio: `mp3`
   - Video: `mp4`
 
 - **Creación automática de carpeta de destino:** Si la carpeta especificada no existe, se crea automáticamente.
 - **Registro de errores:** Guarda en un archivo `songs_not_downloaded.txt` las canciones que no pudieron descargarse.
+- **Reintentos automáticos:** Reintenta fragmentos y descargas fallidas hasta tres veces.
+- **Archivos seguros:** Evita sobrescribir descargas existentes y adapta nombres para Windows.
 
 ## 💻 Requisitos
 
-- Python 3.7 o superior
+- Python 3.8 o superior
 - Paquetes:
-
-  - `yt_dlp`
-  - `youtube-search-python`
+  - `yt-dlp`
 
 Puedes instalarlos con:
 
 ```bash
-pip install yt_dlp youtube-search-python
+pip install -r requirements.txt
 ```
 
 ## ⚠️ Instalación de FFmpeg
@@ -87,20 +86,21 @@ python dw.py --file "C:\ruta\a\songs.txt" --format mp3 --path-dest "C:\Descargas
 | -------------------- | ------------------------------------------ |
 | `--url`, `-u`        | URL directa del video de YouTube.          |
 | `--file`, `-fi`      | Archivo de texto con nombres de canciones. |
-| `--format`, `-ft`    | Formato de descarga: `mp3` o `mp4`.        |
-| `--path-dest`, `-pd` | Ruta de destino para los archivos.         |
+| `--format`, `-ft`    | Formato obligatorio: `mp3` o `mp4`.        |
+| `--path-dest`, `-pd` | Ruta de destino obligatoria.               |
+| `--version`          | Muestra la versión instalada.              |
 
 ## 🗃️ Estructura del proyecto
 
 ```
 cli-dw/
 │
-├── dw.py                      ← Script principal (descargas)
+├── dw.py                      ← Script principal (versión 4.0.1)
 ├── dw.bat                     ← Lanzador interactivo (Windows)
 ├── instal.bat                 ← Instalador de FFmpeg (Windows)
 ├── Lista Canciones.txt        ← Archivo opcional con nombres de canciones
 ├── songs_not_downloaded.txt   ← Se crea si hay errores durante la descarga
-├── requirements.txt           ← Dependencias Python
+├── requirements.txt           ← Dependencia Python
 ```
 
 ## 🛡️ Advertencia

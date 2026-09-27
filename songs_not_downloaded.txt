@@ -1,0 +1,10 @@
+=== Descargas fallidas (Downloader 4.0) ===
+
+Consulta: Afuera está lloviendo
+Error: [0;31mERROR:[0m unable to download video data: HTTP Error 403: Forbidden
+
+Consulta: Fuente de Ortiz
+Error: [0;31mERROR:[0m unable to download video data: HTTP Error 403: Forbidden
+
+Consulta: La ley de la vida
+Error: [0;31mERROR:[0m unable to download video data: HTTP Error 403: Forbidden
