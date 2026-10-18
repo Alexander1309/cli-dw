@@ -52,9 +52,12 @@ Con `dw.bat` podrás:
 
 - Elegir entre descargar por URL o por archivo de nombres (por defecto usa `Lista Canciones.txt`).
 - Seleccionar formato de salida: `mp3` o `mp4`.
-- Indicar carpeta de destino (si no existe, el script de Python la creará).
+- Elegir si descargar en una USB o en el PC. Las unidades USB conectadas se detectan automáticamente y se seleccionan por su letra; si no aparece ninguna, puedes volver a buscar o elegir el PC.
+- En el PC, indicar una ruta base (por defecto, `Downloads` dentro de tu carpeta de usuario).
+- Elegir entre descargar directamente en la raíz del destino seleccionado o indicar el nombre de una carpeta. La carpeta se crea antes de iniciar la descarga; si ya existe, se reutiliza.
+- Revisar el destino y confirmar antes de empezar. Las raíces de unidad como `E:\` se pasan correctamente a Python.
 
-Además, `dw.bat` fuerza la consola a UTF-8 para mostrar correctamente caracteres con acentos.
+Además, `dw.bat` fuerza la consola a UTF-8 para mostrar correctamente caracteres con acentos. La detección USB y la validación de nombres usan Windows PowerShell, incluido en Windows.
 
 ### Opción 2: Uso directo de Python
 
